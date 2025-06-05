@@ -22,7 +22,7 @@ export default function ControlGroup({
     <View>
       <View style={styles.container}>
         {labelIcon}
-        <Text>{label}</Text>
+        <Text style={{ fontSize: 18 }}>{label}</Text>
       </View>
       <TileButtonGroup
         options={options}

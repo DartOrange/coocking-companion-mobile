@@ -318,7 +318,8 @@ const styles = StyleSheet.create({
     minWidth: "45%",
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: 24,
+    fontWeight: "bold",
     color: COLORS.primaryLight,
   },
 });
