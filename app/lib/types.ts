@@ -1,9 +1,9 @@
 export interface RecipePreferences {
-  cost: 'cheap' | 'expensive';
-  time: 'quick' | 'long';
-  difficulty: 'easy' | 'medium' | 'hard';
-  duration: 'shortest' | 'hour' | 'day';
-  dishTypes: ('main' | 'soup' | 'salad' | 'dessert' | 'drink')[];
+  cost: "cheap" | "expensive";
+  time: "quick" | "long";
+  difficulty: "easy" | "medium" | "hard";
+  duration: "shortest" | "hour" | "day";
+  dishType: "main" | "soup" | "salad" | "dessert" | "drink";
 }
 
 export interface Recipe {
@@ -13,6 +13,8 @@ export interface Recipe {
   time: string;
   cost: string;
   costPerServing: number;
+  locationCurrency: string;
+  locationCurrencySymbol: string;
   difficulty: string;
   servings: number;
   tags: string[];
@@ -22,11 +24,27 @@ export interface Recipe {
     price: number;
     store: string;
   }[];
-  instructions: string[];
+  detailedInstructions: {
+    stepNumber: number,
+    description: string,
+  }[];
   nutrition: {
     calories: number;
     carbs: number;
     protein: number;
     fat: number;
   };
+}
+
+interface PreferenceOption {
+  label: string;
+  value: string;
+  icon: React.ReactNode;
+}
+
+export interface Preference {
+  label: string;
+  labelIcon: React.ReactNode;
+  options: PreferenceOption[];
+  selectedKey: "cost" | "time" | "difficulty" | "duration" | "dishType";
 }

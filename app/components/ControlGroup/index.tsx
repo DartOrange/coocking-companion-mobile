@@ -19,7 +19,7 @@ export default function ControlGroup({
   onSelect,
 }: Props) {
   return (
-    <View>
+    <View style={{ width: "100%", maxWidth: 600 }}>
       <View style={styles.container}>
         {labelIcon}
         <Text style={{ fontSize: 18 }}>{label}</Text>
