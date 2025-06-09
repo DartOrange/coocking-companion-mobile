@@ -2,16 +2,14 @@ import { useFavorites } from "@/contexts/FavoritesContext";
 import { useToast } from "@/contexts/ToastContext";
 import { cookingRecipesGeminiPrompt } from "@/lib/prompt";
 import { Recipe, RecipePreferences } from "@/lib/types";
-import Constants from "expo-constants";
+import { Locale } from "expo-localization";
 import { usePathname, useRouter } from "expo-router";
 import { useState } from "react";
 
-const GEMINI_API_KEY = Constants.expoConfig?.extra?.GEMINI_API_KEY;
-const GEMINI_API_URL = Constants.expoConfig?.extra?.GEMINI_API_URL;
 
 export interface AIMessageProps {
   language: string;
-  userLocation: string;
+  userLocationParams: Locale | null;
   preferences: RecipePreferences;
 }
 
@@ -31,7 +29,7 @@ export const useAIRecipesGenerator = () => {
 
   const sendMessage = async ({
     language,
-    userLocation,
+    userLocationParams,
     preferences,
   }: AIMessageProps) => {
     setLoading(true);
@@ -39,34 +37,37 @@ export const useAIRecipesGenerator = () => {
     setRecipes([]);
     setMessageProps({
       language,
-      userLocation,
+      userLocationParams,
       preferences,
     });
 
     try {
-      const res = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text: cookingRecipesGeminiPrompt({
-                    language,
-                    userLocation,
-                    preferences,
-                    recipes,
-                    favorites,
-                  }),
-                },
-              ],
-            },
-          ],
-        }),
-      });
+      const res = await fetch(
+        `${process.env.EXPO_PUBLIC_GEMINI_API_URL}?key=${process.env.EXPO_PUBLIC_GEMINI_API_KEY}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text: cookingRecipesGeminiPrompt({
+                      language,
+                      userLocationParams,
+                      preferences,
+                      recipes,
+                      favorites,
+                    }),
+                  },
+                ],
+              },
+            ],
+          }),
+        }
+      );
 
       const data = await res.json();
 
@@ -85,8 +86,7 @@ export const useAIRecipesGenerator = () => {
               id: index + 1,
             }))
           );
-          if (pathname !== "/recipes")
-            router.push("/recipes");
+          if (pathname !== "/recipes") router.push("/recipes");
         } catch (error) {
           console.error(error);
           toast.showToast({

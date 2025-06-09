@@ -1,16 +1,17 @@
-import { Recipe, RecipePreferences } from './types';
+import { Locale } from "expo-localization";
+import { Recipe, RecipePreferences } from "./types";
 
 interface Props {
-  language: string,
-  userLocation: string,
+  language: string;
+  userLocationParams: Locale | null;
   preferences: RecipePreferences;
-  recipes: Recipe[],
-  favorites: Recipe[],
+  recipes: Recipe[];
+  favorites: Recipe[];
 }
 
 export const cookingRecipesGeminiPrompt = ({
   language,
-  userLocation,
+  userLocationParams,
   preferences,
   recipes,
   favorites,
@@ -33,33 +34,35 @@ export const cookingRecipesGeminiPrompt = ({
     }
     - Dish type: ${preferences.dishType}.
 
-  Response should not contain this recipes: ${recipes.map((recipe) => recipe.name).join(", ")}, ${favorites.map((favorite) => favorite.name).join(", ")}.
+  Response should not contain this recipes: ${recipes
+    .map((recipe) => recipe.name)
+    .join(", ")}, ${favorites.map((favorite) => favorite.name).join(", ")}.
 
   Return ONLY a JSON array of recipes with this exact structure:
   [
     {
-      "name": "Recipe Name",
+      "name": "Название рецепта",
       "image": "https://images.unsplash.com/photo-[appropriate-food-photo]",
-      "time": "25 min",
+      "time": "25 мин",
       "cost": 120,
       "costPerServing": 120,
-      "locationCurrency": "USD",
-      "locationCurrencySymbol": "$",
-      "difficulty": "Easy",
+      "locationCurrency": "UAH",
+      "locationCurrencySymbol": "₴",
+      "difficulty": "Легко",
       "servings": 2,
-      "tags": ["Italian", "Vegetarian"],
+      "tags": ["Итальянское", "Вегетарианское"],
       "ingredients": [
-        {"name": "Ingredient", "amount": "200g", "price": 45, "store": "Amazon"}
+        {"name": "Ингридиент", "amount": "200g", "price": 45, "store": "Новус"}
       ],
       "detailedInstructions": [
-        { stepNumber: 1, description: "Cook 15 min" }
+        { stepNumber: 1, description: "Готовить 15 мин" }
       ],
       "nutrition": {"calories": 285, "carbs": 45, "protein": 8, "fat": 12}
     }
   ]
 
-  Use realistic ${userLocation} ingredient names, prices in ${userLocation} currency, and detailed cooking instructions in ${language} language.
+  Use realistic Ukraine ingredient names, prices in Ukraine currency, and detailed cooking instructions in Russian language.
 
-  Response in the JSON array should be only in the ${language} language.
+  Response in the JSON array should be only in the Russian language.
   Return only the JSON array, no additional text.
 `;

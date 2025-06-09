@@ -12,14 +12,14 @@ import { useState } from "react";
 import ControlGroup from "./components/ControlGroup";
 import FloatingButton from "./components/FloatinButton";
 import { useRecipes } from "./contexts/RecipesContext";
-import { useIPLocation } from "./hooks/useIPLocation";
+import { useLocation } from "./hooks/useLocation";
 import { Preference, RecipePreferences } from "./lib/types";
 import { COLORS } from "./theme/colors";
 
 export default function App() {
   const router = useRouter();
   const recipes = useRecipes();
-  const location = useIPLocation();
+  const locationParams = useLocation();
 
   const [preferences, setPreferences] = useState<RecipePreferences>({
     cost: "cheap",
@@ -41,7 +41,7 @@ export default function App() {
 
   const onGenerateClick = () => {
     recipes.sendMessage({
-      userLocation: `${location?.country}/${location?.city}`,
+      userLocationParams: locationParams,
       language: "Russian",
       preferences,
     });

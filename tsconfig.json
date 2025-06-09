@@ -8,18 +8,11 @@
     "module": "node16",
     "moduleResolution": "node16",
     "skipLibCheck": true,
-    "customConditions": [
-      "react-native"
-    ],
+    "customConditions": ["react-native"],
     "paths": {
-      "@/*": [
-        "./app/*"
-      ]
+      "@/*": ["./app/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "app.config.ts"],
   "extends": "expo/tsconfig.base"
 }
